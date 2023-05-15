@@ -6,6 +6,6 @@ dependecies: #none
 api-version: 1.19
 commands:
   sanction:
-    permission: op
+    permission: simplesanction.sanction
     description: Sanction a player
     usage: /sanction <player> <reason>
