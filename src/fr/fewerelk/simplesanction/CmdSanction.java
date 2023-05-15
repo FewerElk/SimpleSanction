@@ -17,7 +17,6 @@ public class CmdSanction implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-    	if (cmd.getName().equalsIgnoreCase("sanction")) {
             //get sender
             Player source = (Player) sender;
 
@@ -27,6 +26,10 @@ public class CmdSanction implements CommandExecutor {
                 if(args.length == 2) {
                     //get the target
                     Player target = Bukkit.getPlayer(args[0]);
+                    
+                    //get the server
+                    MinecraftServer server = MinecraftServer.getServer();
+
 
                     //create the Date object that define when the ban expires (here 7 days)
                     int bantime = 604800000;
@@ -46,7 +49,6 @@ public class CmdSanction implements CommandExecutor {
                     return true;
                 }
             }
-        }
         return true;
     }
 }
