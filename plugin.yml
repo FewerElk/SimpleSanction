@@ -8,4 +8,3 @@ commands:
   sanction:
     permission: simplesanction.sanction
     description: Sanction a player
-    usage: /sanction <player> <reason>

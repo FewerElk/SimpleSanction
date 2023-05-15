@@ -40,6 +40,7 @@ public class CmdSanction implements CommandExecutor {
                     //add the ban to the blacklist (or banlist)
                     Bukkit.getBanList(Type.IP).addBan(Bukkit.MinecraftServer.getServer().getUserCache().getProfile(target), reason, expires, source);
                     Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target.getDisplayName() + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
+                    //kick the player (todo)
                 } else {
                     source.sendMessage(ChatColor.DARK_RED + "[SimpleSanction] : Failed : bad number of arguments. Usage : /sanction <player> <reason>.");
                     return true;
