@@ -1,0 +1,11 @@
+name: SimpleSanction
+main: fr.fewerelk.simplesanction.Main
+author: fewerelk
+version: 1.0
+dependecies: #none
+api-version: 1.19
+commands:
+  sanction:
+    permission: op
+    description: Sanction a player
+    usage: /sanction <player> <reason>
