@@ -11,4 +11,4 @@ Unzip the release and import it in Eclipse. Then you can right clic on the plugi
 Nothing to config
 # Usage
 For use the plugin, just use the command
- /sanction <player> <reason>
+ /sanction player_here reason_here
