@@ -10,4 +10,5 @@ Unzip the release and import it in Eclipse. Then you can right clic on the plugi
 # Config
 Nothing to config
 # Usage
-For use the plugin, just use the command /sanction <player> <reason>
+For use the plugin, just use the command
+ /sanction <player> <reason>
