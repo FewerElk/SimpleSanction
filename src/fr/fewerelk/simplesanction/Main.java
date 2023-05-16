@@ -1,8 +1,6 @@
 package fr.fewerelk.simplesanction;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Bukkit;
 

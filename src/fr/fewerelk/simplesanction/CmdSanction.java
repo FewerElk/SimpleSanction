@@ -28,7 +28,7 @@ public class CmdSanction implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[0]);
                     
                     //get the server
-                    MinecraftServer server = MinecraftServer.getServer();
+                    var server = new MinecraftServer.getServer();
 
 
                     //create the Date object that define when the ban expires (here 7 days)
@@ -41,7 +41,7 @@ public class CmdSanction implements CommandExecutor {
                     String reason = ChatColor.DARK_RED + "You are banned by" + source.getDisplayName() + ". Reason : " + args[1] + ".Expires on : " + expires;
 
                     //add the ban to the blacklist (or banlist)
-                    Bukkit.getBanList(Type.IP).addBan(Bukkit.MinecraftServer.getServer().getUserCache().getProfile(target), reason, expires, source);
+                    Bukkit.getBanList(Type.IP).addBan(Bukkit.MinecraftServer().getServer().getUserCache().getProfile(target), reason, expires, source);
                     Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target.getDisplayName() + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
                     //kick the player (todo)
                 } else {
