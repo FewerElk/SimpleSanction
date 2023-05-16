@@ -10,7 +10,7 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void OnEnable() {
-		this.getCommand("manger").setExecutor(new CmdSanction());
+		this.getCommand("sanction").setExecutor(new CmdSanction());
 		Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "SimpleSanction enabled without any issue !");
 	}
 	
