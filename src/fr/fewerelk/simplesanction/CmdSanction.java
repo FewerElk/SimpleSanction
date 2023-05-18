@@ -51,10 +51,10 @@ public class CmdSanction implements CommandExecutor {
 
                     
                     //get the reason
-                    String reason = ChatColor.DARK_RED + "You are banned by" + source.getDisplayName() + ". Reason : " + args[1] + ".Expires on : " + expires;
+                    String reason = ChatColor.DARK_RED + "You are banned by " + source.getDisplayName() + ". Reason : " + args[1] + ". Expires on : " + expires;
 
                     //add the ban to the blacklist (or banlist)
-                    Bukkit.getBanList(BanList.Type.IP).addBan(target, reason, expires, source.getName());
+                    Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expires, source.getName());
                     Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
                     Bukkit.getLogger().info(ChatColor.DARK_RED + "The player " + target + " has been banned by " + source.getName() + " !");
 
@@ -109,7 +109,7 @@ public class CmdSanction implements CommandExecutor {
                 String reason = ChatColor.DARK_RED + "You are banned by" + source + ". Reason : " + args[1] + ".Expires on : " + expires;
 
                 //add the ban to the blacklist (or banlist)
-                Bukkit.getBanList(BanList.Type.IP).addBan(target, reason, expires, source);
+                Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expires, source);
                 Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
                 Bukkit.getLogger().info(ChatColor.DARK_RED + "You have succesfully banned " + target + " !");
                 //kick the player (todo)
