@@ -38,7 +38,7 @@ public class CmdSanction implements CommandExecutor {
                     String reason = ChatColor.DARK_RED + "You are banned by" + source.getDisplayName() + ". Reason : " + args[1] + ".Expires on : " + expires;
 
                     //add the ban to the blacklist (or banlist)
-                    Bukkit.getBanList(BanList.Type.IP).addBan(target.getAddress().getHostString(), reason, expires, source);
+                    Bukkit.getBanList(BanList.Type.IP).addBan(target.getAddress().getHostString(), reason, expires, source.getName());
                     Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target.getDisplayName() + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
                     //kick the player (todo)
                 } else {

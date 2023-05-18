@@ -6,9 +6,9 @@ For use this plugin, you should only have Spigot server 1.19 and Eclipse.
 ## Download
 For download the plugin, download the lastest release.
 ## Compile
-Unzip the release and import it in Eclipse. Then you can right clic on the plugin and choose "export", then "JAR File". You can place the jar file in the plugin folder of your server, then start it. It is done !
+Find the project compiled in the folder "compiled"
 # Config
-Nothing to config
+Nothing to config for the moment
 # Usage
 For use the plugin, just use the command
- /sanction player_here reason_here
+ /sanction player reason --> add a sanction for the specified user with the specified reason.
