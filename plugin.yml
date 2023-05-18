@@ -1,5 +1,5 @@
 name: SimpleSanction
-main: fr.fewerelk.simplesanction.Main
+main: fr.fewerelk.simplesanction.SimpleSanction
 author: fewerelk
 version: 1.0
 dependecies: #none
