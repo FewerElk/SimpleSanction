@@ -174,8 +174,14 @@ public class CmdSanction implements CommandExecutor {
                     
                     switch (nbsanc) {
                         case 0:
-                            warn(Bukkit.getPlayer(target), args[1]);
-                            upgradesanction(target);
+                            if (Bukkit.getPlayer(target).isOnline()) {
+                                warn(Bukkit.getPlayer(target), args[1]);
+                                upgradesanction(target);
+                            } else {
+                                source.sendMessage(ChatColor.YELLOW + "This player is not online ! THe plugin can't show him the warning !");
+                                Bukkit.getPlayer(target).damage(999999999);
+                                source.sendMessage(ChatColor.YELLOW + "The plugin killed him.");
+                            }
                         case 1:
                             kickplayer(Bukkit.getPlayer(target), args[1]);
                             upgradesanction(target);
@@ -200,8 +206,14 @@ public class CmdSanction implements CommandExecutor {
                     
                     switch (nbsanc) {
                         case 0:
+                        if (Bukkit.getPlayer(target).isOnline()) {
                             warn(Bukkit.getPlayer(target), args[1]);
                             upgradesanction(target);
+                        } else {
+                            Bukkit.getLogger().warning(ChatColor.YELLOW + "This player is not online ! THe plugin can't show him the warning !");
+                            Bukkit.getPlayer(target).damage(999999999);
+                            Bukkit.getLogger().warning(ChatColor.YELLOW + "The plugin killed him.");
+                        }
                         case 1:
                             kickplayer(Bukkit.getPlayer(target), args[1]);
                             upgradesanction(target);
