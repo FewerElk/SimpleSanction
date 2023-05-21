@@ -196,7 +196,21 @@ public class CmdSanction implements CommandExecutor {
                 //get the target
                 String target = args[0];
                              
-                banplayer(target, args[1], source);
+                int nbsanc = findsanction(target);
+                    
+                    switch (nbsanc) {
+                        case 0:
+                            warn(Bukkit.getPlayer(target), args[1]);
+                            upgradesanction(target);
+                        case 1:
+                            kickplayer(Bukkit.getPlayer(target), args[1]);
+                            upgradesanction(target);
+                        case 2:
+                            banplayer(target, args[1], source);
+                            upgradesanction(target);
+                        default:
+                            Bukkit.getLogger().warning(ChatColor.RED + "This player is boring ! He have too many sanctions. Please use /ban <player> instead.");
+                    }
             } else {
                 Bukkit.getLogger().warning(ChatColor.DARK_RED + "[SimpleSanction] : Failed : bad number of arguments. Usage : /sanction <player> <reason>.");
                 return true;
