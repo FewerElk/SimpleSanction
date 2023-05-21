@@ -1,5 +1,6 @@
 package fr.fewerelk.simplesanction;
 
+//spigot imports
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,9 +9,98 @@ import org.bukkit.Bukkit;
 import org.bukkit.BanList;
 import org.bukkit.ChatColor;
 
+//java imports
 import java.util.Date;
+import java.io.File;
+import java.util.Scanner;
+import java.io.FileNotFoundException;
 
 public class CmdSanction implements CommandExecutor {
+    //the class for the /sanction command
+
+    public static void kickplayer(Player p, String reason) {
+        //kick a player
+        p.kickPlayer(reason);
+        Bukkit.getServer().broadcastMessage(ChatColor.RED + 
+        "The player " + 
+        p.getName() + 
+        " was kicked : " + 
+        ChatColor.YELLOW + 
+        reason);
+
+        Bukkit.getLogger().info(ChatColor.RED + 
+        "The player " + 
+        p.getName() + 
+        " was kicked : " + 
+        ChatColor.YELLOW + 
+        reason);
+    }
+
+    public static int findsanction(String player) {
+        return 0;
+    }
+
+    public static Date getexpires() {
+        //give the expires date
+        //read the file
+        try {
+            Scanner diskScanner = new Scanner(new File("bantime.txt"));
+            
+
+            //get the expires date
+            //days
+            int days = diskScanner.nextInt();
+            int milli_days = days * 24 * 3600 * 1000;
+
+            //hours
+            int hours = diskScanner.nextInt();
+            int milli_hours = hours * 3600 * 100;
+            //minutes
+            int minutes = diskScanner.nextInt();
+            int milli_minutes = minutes * 60 * 100;
+            //seconds
+            int seconds = diskScanner.nextInt();
+            int milli_seconds = seconds * 100;
+            //total
+            int bantime = milli_days + milli_hours + milli_minutes + milli_seconds;
+            //creating Date instances
+            Date date_now = new Date();
+            Date expires = new Date(date_now.getTime() + bantime);
+            return expires;
+            
+        } catch (FileNotFoundException e) {
+            Bukkit.getLogger().warning("Error : the file bantime.txt can't be find (FileNot FoundException). Disabling plugin...");
+            Bukkit.getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("SimpleSanction"));
+            return new Date();
+        }
+    }
+
+    public static void banplayer(String p, String reason, String source) {
+        //ban a player
+
+        Date expires = getexpires();
+        Bukkit.getBanList(BanList.Type.NAME).addBan(p, reason, expires, source);
+        kickplayer(Bukkit.getPlayer(p), reason);
+        Bukkit.getServer().broadcastMessage(ChatColor.RED + 
+        "The player " + 
+        p + 
+        " was banned by " + 
+        source +
+        " : " + 
+        ChatColor.YELLOW + 
+        reason + 
+        ".");
+
+        Bukkit.getLogger().info(ChatColor.RED + 
+        "The player " + 
+        p + 
+        " was banned by " + 
+        source +
+        " : " + 
+        ChatColor.YELLOW + 
+        reason + 
+        ".");
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -24,50 +114,11 @@ public class CmdSanction implements CommandExecutor {
                 if(args.length == 2) {
                     //get the target
                     String target = args[0];
-
-                    //create the Date object that define when the ban expires (here 7 days)
-                    //days
-                    int days = 7;
-                    int milli_days = days * 24 * 3600 * 1000;
-
-                    //hours
-                    int hours = 0;
-                    int milli_hours = hours * 3600 * 1000;
-
-                    //minutes
-                    int minutes = 0;
-                    int milli_minutes = minutes * 60 * 1000;
-
-                    //seconds
-                    int seconds = 0;
-                    int milli_seconds = seconds * 1000;
-
-                    //total
-                    int bantime = milli_days + milli_hours + milli_minutes + milli_seconds;
-
-                    //creating Date instances
-                    Date date_now = new Date();
-                    Date expires = new Date(date_now.getTime() + bantime);
-
                     
                     //get the reason
-                    String reason = ChatColor.DARK_RED + "You are banned by " + source.getDisplayName() + ". Reason : " + args[1] + ". Expires on : " + expires;
+                    String reason = ChatColor.DARK_RED + "You are banned by " + source.getDisplayName() + ". Reason : " + args[1] + ".";
 
-                    //add the ban to the blacklist (or banlist)
-                    Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expires, source.getName());
-                    Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
-                    Bukkit.getLogger().info(ChatColor.DARK_RED + "The player " + target + " has been banned by " + source.getName() + " !");
-
-                    //kick the player if he is online
-                    //check if he is online
-                    Player t = Bukkit.getPlayer(target);
-                    if (t == null){
-                        //do nothing because he isn't online.
-                        //kick the player isn't needed.
-                    } else {
-                        //the player is online. Kick him is necessary.
-                        t.kickPlayer(reason);
-                    }
+                    banplayer(target, reason, source.getName());
                 } else {
                     source.sendMessage(ChatColor.DARK_RED + "[SimpleSanction] : Failed : bad number of arguments. Usage : /sanction <player> <reason>.");
                     return true;
@@ -78,41 +129,11 @@ public class CmdSanction implements CommandExecutor {
             if(args.length == 2) {
                 //get the target
                 String target = args[0];
-
-
-                //create the Date object that define when the ban expires (here 7 days)
-                    //days
-                    int days = 7;
-                    int milli_days = days * 24 * 3600 * 1000;
-
-                    //hours
-                    int hours = 0;
-                    int milli_hours = hours * 3600 * 1000;
-
-                    //minutes
-                    int minutes = 0;
-                    int milli_minutes = minutes * 60 * 1000;
-
-                    //seconds
-                    int seconds = 0;
-                    int milli_seconds = seconds * 1000;
-
-                    //total
-                    int bantime = milli_days + milli_hours + milli_minutes + milli_seconds;
-
-                    //creating Date instances
-                    Date date_now = new Date();
-                    Date expires = new Date(date_now.getTime() + bantime);
-
-                
+             
                 //get the reason
-                String reason = ChatColor.DARK_RED + "You are banned by" + source + ". Reason : " + args[1] + ".Expires on : " + expires;
-
-                //add the ban to the blacklist (or banlist)
-                Bukkit.getBanList(BanList.Type.NAME).addBan(target, reason, expires, source);
-                Bukkit.getServer().broadcastMessage(ChatColor.DARK_RED + "The player " + target + " has been banned !" + ChatColor.YELLOW + " Be carefull !");
-                Bukkit.getLogger().info(ChatColor.DARK_RED + "You have succesfully banned " + target + " !");
-                //kick the player (todo)
+                String reason = ChatColor.DARK_RED + "You are banned by" + source + ". Reason : " + args[1] + ".";
+                
+                banplayer(target, reason, source);
             } else {
                 Bukkit.getLogger().warning(ChatColor.DARK_RED + "[SimpleSanction] : Failed : bad number of arguments. Usage : /sanction <player> <reason>.");
                 return true;
