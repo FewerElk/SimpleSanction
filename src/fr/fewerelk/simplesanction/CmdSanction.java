@@ -66,6 +66,8 @@ public class CmdSanction implements CommandExecutor {
             //creating Date instances
             Date date_now = new Date();
             Date expires = new Date(date_now.getTime() + bantime);
+            diskScanner.close();
+
             return expires;
             
         } catch (FileNotFoundException e) {
