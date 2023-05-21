@@ -64,6 +64,7 @@ public class CmdSanction implements CommandExecutor {
         try {
             PrintStream out = new PrintStream(player + ".txt");
             out.print(level);
+            out.close()
         } catch (FileNotFoundException e) {}
     }
 
