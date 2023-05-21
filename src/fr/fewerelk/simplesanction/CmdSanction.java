@@ -14,6 +14,8 @@ import java.util.Date;
 import java.io.File;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintStream;
 
 public class CmdSanction implements CommandExecutor {
     //the class for the /sanction command
@@ -37,7 +39,17 @@ public class CmdSanction implements CommandExecutor {
     }
 
     public static int findsanction(String player) {
-        return 0;
+        File file = new File(player + ".txt");
+        if (file.exists()) {
+            try{
+            Scanner scan = new Scanner(file);
+            int sanc = scan.nextInt();
+            scan.close();
+            return sanc;} catch(IOException e) {}
+        } else {
+            return 0;
+        }
+        return 99999;
     }
 
     public static Date getexpires() {
@@ -71,9 +83,18 @@ public class CmdSanction implements CommandExecutor {
             return expires;
             
         } catch (FileNotFoundException e) {
-            Bukkit.getLogger().warning("Error : the file bantime.txt can't be find (FileNot FoundException). Disabling plugin...");
-            Bukkit.getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("SimpleSanction"));
-            return new Date();
+            File f = new File("bantime.txt");
+            try {
+                f.createNewFile();
+                PrintStream errorwriter = new PrintStream("bantime.txt");
+                errorwriter.print("7 0 0 0");
+                errorwriter.close();
+            } catch(IOException e2) {
+                Bukkit.getLogger().warning("Error : we met a weird exception. The plugin is disabled.");
+                Bukkit.getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("SimpleSanction"));
+                return new Date();
+            }
+            return getexpires();
         }
     }
 
