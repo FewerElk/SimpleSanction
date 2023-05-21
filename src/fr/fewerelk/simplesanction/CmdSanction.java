@@ -52,6 +52,21 @@ public class CmdSanction implements CommandExecutor {
         return 99999;
     }
 
+    public static void upgradesanction(String player) {
+        int level = findsanction(player);
+        File file = new File(player + ".txt");
+        level += 1;
+        if (level == 1) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {}
+        }
+        try {
+            PrintStream out = new PrintStream(player + ".txt");
+            out.print(level);
+        } catch (FileNotFoundException e) {}
+    }
+
     public static Date getexpires() {
         //give the expires date
         //read the file
@@ -101,8 +116,10 @@ public class CmdSanction implements CommandExecutor {
     public static void banplayer(String p, String reason, String source) {
         //ban a player
 
+        String r = ChatColor.DARK_RED + "You are banned by " + source + ". Reason : " + reason + ".";
+
         Date expires = getexpires();
-        Bukkit.getBanList(BanList.Type.NAME).addBan(p, reason, expires, source);
+        Bukkit.getBanList(BanList.Type.NAME).addBan(p, r, expires, source);
         kickplayer(Bukkit.getPlayer(p), reason);
         Bukkit.getServer().broadcastMessage(ChatColor.RED + 
         "The player " + 
@@ -125,6 +142,20 @@ public class CmdSanction implements CommandExecutor {
         ".");
     }
 
+    public static void warn(Player p, String reason) {
+        //warn a player
+        p.sendMessage(ChatColor.RED + 
+        "YOU RECEVEID A WARNING !\nPLEASE DON'T IGNORE IT !\nSOME SANCTION CAN BE USED !\nReason of the warning : " + 
+        reason);
+        Bukkit.broadcastMessage(ChatColor.RED + 
+        "The player " + 
+        p.getName() + 
+        " received a warning ! Reason : " +
+        ChatColor.YELLOW + 
+        reason + 
+        ".");
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
@@ -137,11 +168,22 @@ public class CmdSanction implements CommandExecutor {
                 if(args.length == 2) {
                     //get the target
                     String target = args[0];
-                    
-                    //get the reason
-                    String reason = ChatColor.DARK_RED + "You are banned by " + source.getDisplayName() + ". Reason : " + args[1] + ".";
 
-                    banplayer(target, reason, source.getName());
+                    int nbsanc = findsanction(target);
+                    
+                    switch (nbsanc) {
+                        case 0:
+                            warn(Bukkit.getPlayer(target), args[1]);
+                            upgradesanction(target);
+                        case 1:
+                            kickplayer(Bukkit.getPlayer(target), args[1]);
+                            upgradesanction(target);
+                        case 2:
+                            banplayer(target, args[1], source.getName());
+                            upgradesanction(target);
+                        default:
+                            Bukkit.getLogger().warning(ChatColor.RED + "This player is boring ! He have too many sanctions. Please use /ban <player> instead.");
+                    }
                 } else {
                     source.sendMessage(ChatColor.DARK_RED + "[SimpleSanction] : Failed : bad number of arguments. Usage : /sanction <player> <reason>.");
                     return true;
@@ -152,11 +194,8 @@ public class CmdSanction implements CommandExecutor {
             if(args.length == 2) {
                 //get the target
                 String target = args[0];
-             
-                //get the reason
-                String reason = ChatColor.DARK_RED + "You are banned by" + source + ". Reason : " + args[1] + ".";
-                
-                banplayer(target, reason, source);
+                             
+                banplayer(target, args[1], source);
             } else {
                 Bukkit.getLogger().warning(ChatColor.DARK_RED + "[SimpleSanction] : Failed : bad number of arguments. Usage : /sanction <player> <reason>.");
                 return true;
